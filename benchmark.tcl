@@ -1,23 +1,28 @@
-#!/usr/bin/env tclsh
+#! /usr/bin/env tclsh
 namespace eval benchmark {
-    variable tclssg {../ssg.tcl}
+    variable tclssg [expr {
+        [info exists ::env(TCLSSG)] ?
+        $::env(TCLSSG) :
+        {../tclssg/ssg.tcl}
+    }]
     variable benchmarks [list benchmark1]
 }
 
-proc ::benchmark::run-tclssg {prefix command args} {
-    variable tclssg
-    exec -ignorestderr -- {*}$prefix $tclssg $command {*}$args
+proc ::benchmark::run args {
+    puts "> $args"
+    exec -ignorestderr -- {*}$args >@ stdout
 }
 
 proc ::benchmark::main {} {
     variable benchmarks
-    puts "Tclssg version tested: [run-tclssg {} version]"
+    variable tclssg
+
+    run $tclssg version
     foreach benchmark $benchmarks {
         for {set i 0} {$i < 3} {incr i} {
-            run-tclssg time build [file join $benchmark input] > /dev/null
-        }
-        for {set i 0} {$i < 3} {incr i} {
-            run-tclssg memusg build [file join $benchmark input] > /dev/null
+            # You need GNU time(1) for the "-v" flag.
+            run time -v $tclssg build [file join $benchmark input] |& \
+                awk {/(time|CPU|set size)/}
         }
     }
 }
