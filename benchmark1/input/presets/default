@@ -1,0 +1,37 @@
+moreText {(<a href="%s">read more</a>)}
+navbar {
+    items {
+        Home    .
+        Blog    blog/
+        Contact contact.html
+    }
+}
+sidebar {
+    links {
+        enable 0
+    }
+    note {
+        content {
+             <h3>About</h3>
+             This is the blog of the sample Tclssg project.
+        }
+    }
+}
+
+locale en_US
+comments {
+    enable 0
+    engine none
+    disqus {
+        shortname {}
+    }
+}
+{sidebar note enable} 0
+bootstrap {
+    version 3
+    theme vendor/bootstrap/css/bootstrap-theme.min.css
+}
+customCSS {
+    tclssg.css
+}
+imagePath /images
