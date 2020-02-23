@@ -13,13 +13,13 @@ proc ::benchmark::run args {
     exec -ignorestderr -- {*}$args >@ stdout
 }
 
-proc ::benchmark::main {} {
+proc ::benchmark::main {{n 3}} {
     variable benchmarks
     variable tclssg
 
     run $tclssg version
     foreach benchmark $benchmarks {
-        for {set i 0} {$i < 3} {incr i} {
+        for {set i 0} {$i < $n} {incr i} {
             # You need GNU time(1) for the "-v" flag.
             run time -v $tclssg build [file join $benchmark input] |& \
                 awk {/(time|CPU|set size)/}
@@ -27,4 +27,4 @@ proc ::benchmark::main {} {
     }
 }
 
-::benchmark::main
+::benchmark::main {*}$argv
