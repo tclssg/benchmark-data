@@ -35,3 +35,4 @@ customCSS {
     tclssg.css
 }
 imagePath /images
+websiteTitle {SSG Test}
